@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException, Response
+from fastapi.responses import HTMLResponse
 from sqlmodel import Session, select
 
 from database.session import get_session
@@ -30,11 +31,195 @@ START_TIME = time.time()
 APP_VERSION = "1.0.0"
 
 
+@app.get("/", response_class=HTMLResponse)
+def portfolio():
+    html_content = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Griffine Ochieng - Backend Portfolio</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 40px;
+                background: #f5f5f5;
+            }
 
-@app.get("/")
-def root():
-    return {"message": "Product API is running"}
+            .container {
+                max-width: 900px;
+                margin: auto;
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
 
+            h1 {
+                color: #2c3e50;
+                border-bottom: 3px solid #3498db;
+                padding-bottom: 10px;
+            }
+
+            .student-info {
+                background: #e8f4fd;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 20px 0;
+            }
+
+            .admission {
+                color: #2980b9;
+                font-weight: bold;
+            }
+
+            .assignment {
+                margin: 12px 0;
+                padding: 15px;
+                background: #f8f9fa;
+                border-left: 4px solid #3498db;
+                border-radius: 6px;
+            }
+
+            .assignment a {
+                color: #0366d6;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            .assignment a:hover {
+                text-decoration: underline;
+            }
+
+            .badge {
+                background: #3498db;
+                color: white;
+                padding: 4px 10px;
+                border-radius: 12px;
+                margin-right: 10px;
+                font-size: 0.85em;
+            }
+
+            .not-assigned {
+                color: #7f8c8d;
+            }
+
+            .footer {
+                margin-top: 30px;
+                text-align: center;
+                color: #95a5a6;
+                border-top: 1px solid #ddd;
+                padding-top: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>📚 Backend Development Portfolio</h1>
+
+            <div class="student-info">
+                <p><strong>Student Name:</strong> Griffine Ochieng</p>
+
+                <p>
+                    <strong>Admission Number:</strong>
+                    <span class="admission">C027-01-0914/2024</span>
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    griffine.otieno24@students.dkut.ac.ke
+                </p>
+            </div>
+
+            <h2>📝 Backend Assignments</h2>
+
+            <p>
+                Click on an assignment to view the source code on GitHub.
+            </p>
+
+            <div class="assignment">
+                <span class="badge">Lesson 1</span>
+                <span class="not-assigned">Not assigned</span>
+            </div>
+
+            <div class="assignment">
+                <span class="badge">Lesson 2</span>
+                <span class="not-assigned">Not assigned</span>
+            </div>
+
+            <div class="assignment">
+                <span class="badge">Lesson 3</span>
+                <span class="not-assigned">Not assigned</span>
+            </div>
+
+            <div class="assignment">
+                <a href="https://github.com/griffineochieng96-eng/gighub-api"
+                   target="_blank">
+                    <span class="badge">Lesson 4</span>
+                    PostgreSQL & SQLModel – Your First Database
+                </a>
+            </div>
+
+            <div class="assignment">
+                <a href="https://github.com/griffineochieng96-eng/library-api-lab4"
+                   target="_blank">
+                    <span class="badge">Lesson 5</span>
+                    CRUD Operations
+                </a>
+            </div>
+
+            <div class="assignment">
+                <a href="https://github.com/griffineochieng96-eng/bookstore-api"
+                   target="_blank">
+                    <span class="badge">Lesson 6</span>
+                    Error Handling & Validation
+                </a>
+            </div>
+
+            <div class="assignment">
+                <a href="https://github.com/griffineochieng96-eng/techvault-api"
+                   target="_blank">
+                    <span class="badge">Lesson 7</span>
+                    User Authentication – JWT & Password Hashing
+                </a>
+            </div>
+
+            <div class="assignment">
+                <a href="https://github.com/griffineochieng96-eng/healthtrack-api"
+                   target="_blank">
+                    <span class="badge">Lesson 8</span>
+                    Authorization & Rate Limiting
+                </a>
+            </div>
+
+            <div class="assignment">
+                <a href="https://github.com/griffineochieng96-eng/sendIt-api"
+                   target="_blank">
+                    <span class="badge">Lesson 9</span>
+                    File Uploads & External APIs
+                </a>
+            </div>
+
+            <div class="assignment">
+                <a href="https://github.com/griffineochieng96-eng/product-api"
+                   target="_blank">
+                    <span class="badge">Lesson 10</span>
+                    Testing & Deployment (Cloud)
+                </a>
+            </div>
+
+            <div class="footer">
+                <p>📍 Deployed on Render</p>
+                <p>Backend Development Portfolio — Griffine Ochieng</p>
+            </div>
+
+        </div>
+    </body>
+    </html>
+    """
+
+    return HTMLResponse(content=html_content)
 @app.get("/health")
 def health():
     uptime = time.time() - START_TIME
